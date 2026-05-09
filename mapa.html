@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Descarte</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+    <!-- Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <i class="fa-solid fa-bolt"></i> GreenCharge
+        </a>
+
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+                <li class="nav-item"><a class="nav-link" href="sobre.html">Sobre</a></li>
+                <li class="nav-item"><a class="nav-link" href="descarte.html">Descarte</a></li>
+                <li class="nav-item"><a class="nav-link active" href="mapa.html">Mapa</a></li>
+                <li class="nav-item"><a class="nav-link" href="cartilha.html">Cartilha</a></li>
+                <li class="nav-item"><a class="nav-link" href="referencias.html">Referências</a></li>
+                <li class="nav-item"><a class="nav-link" href="app.html">App</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- TEXTO -->
+<div class="container container-box text-center mt-5">
+    <h2 class="text-success">Pontos de Descarte</h2>
+    <p>
+        Você pode encontrar mais pontos de descarte no site da prefeitura da sua cidade.
+        <a target="_blank" href="https://jundiai.sp.gov.br/infraestrutura-e-servicos-publicos/limpeza-publica/ecopontos/">Ecopontos Jundiaí</a>
+    </p>
+    
+    <p>
+        Encontre alguns locais para descarte correto de pilhas e baterias em Jundiaí.
+        Clique nos pontos do mapa para ver os detalhes.
+    </p>
+</div>
+
+<!-- MAPA -->
+<div class="mapa-container text-center mt-5">
+    <div id="map"></div>
+</div>
+
+<!-- FOOTER -->
+<footer class=" bg-dark text-white footer-green text-center p-4 mt-5">
+    <p><strong>Projeto:</strong> GreenCharge</p>
+    <p><strong>Curso:</strong> Ciência da Computação</p>
+    <p><strong>Disciplina:</strong> Projeto e Desenvolvimento I</p>
+    <p><strong>Integrantes:</strong> grupo</p>
+    <p><strong>Instituição:</strong> Universidade Paulista</p>
+    <p><strong>Ano:</strong> 2026</p>
+</footer>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    // =========================
+    // CRIA O MAPA
+    // =========================
+    var map = L.map('map').setView([-23.185, -46.897], 13); 
+    // coordenadas de Jundiaí
+
+    // =========================
+    // CAMADA DO MAPA (visual)
+    // =========================
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // =========================
+    // LISTA DE PONTOS
+    // =========================
+    var locais = [
+
+        {
+            nome: "Compal Eletrônica do Brasil",
+            coords: [-23.151691950300915, -46.940036980481764],
+            endereco: "R. Kanebo, 175 - Distrito Industrial, Jundiaí - SP, 13213-090"
+        },
+
+        {
+            nome: "Jardim Tarumã",
+            coords: [-23.170855257659436, -46.8625745889568],
+            endereco: "R. José Dias, 700 - Jardim Tarumã, Jundiaí - SP, 13216-490"
+        },
+
+        {
+            nome: "SESI",
+            coords: [-23.170904574654458, -46.8625745889568],
+            endereco: "R. José Dias, 700 - Jardim Tarumã, Jundiaí - SP, 13216-490"
+        },
+
+        {
+            nome: "Eletrica Prestes",
+            coords: [-23.207040196283423, -46.78490029205717],
+            endereco: "R. Francisco Miguel, 448 - Centro, Campo Limpo Paulista - SP, 13230-001"
+        },
+
+        {
+            nome: "ATEAL",
+            coords: [-23.176215260051517, -46.89886817546403],
+            endereco: "Av. Antônio Frederico Ozanan, 6561 - Vila Rafael de Oliveira, Jundiaí - SP, 13201-125"
+        },
+
+        {
+            nome: "Residencial Jundiaí",
+            coords: [-23.180, -46.940],
+            endereco: "Jardim das Tulipas, Jundiaí - SP, 13212-780"
+        },
+
+        {
+            nome: "Escola Senai Conde Alexandre Siciliano",
+            coords: [-23.194966674828926, -46.891420115343394],
+            endereco: "R. Eng. Roberto Mange, 95 - Anhangabaú, Jundiaí - SP, 13208-200"
+        },
+
+        {
+            nome: "JVR Sucatas",
+            coords: [-23.150476000315738, -47.01037069080818],
+            endereco: "Av. Eunice Cavalcante de Souza Queiroz, 444 - Parque Res. Jundiaí, Jundiaí - SP, 13212-463"
+        },
+
+        {
+            nome: "Associação Acolhimento Bom Pastor - Novo Horizonte",
+            coords: [-23.152112531306916, -46.977120290808266],
+            endereco: "Est. Mun. do Varjão, 1641 - Jardim Novo Horizonte, Jundiaí - SP, 13212-590"
+        },
+
+        {
+            nome: "APAE",
+            coords: [-23.01184535467228, -46.849317401695174],
+            endereco: "R. Atílio Lanfranchi, 607 - Vila Bela Vista, Itatiba - SP, 13256-110"
+        },
+
+        {
+            nome: "Magazine Luiza",
+            coords: [-23.080533418468683, -46.95143224848214],
+            endereco: "R. Armando Steck, 408 - Vila Bossi, Louveira - SP, 13290-000"
+        },
+
+
+        {
+            nome: "Mercado Vereda",
+            coords: [-23.33291362827414, -46.75269841038352],
+            endereco: "Av. Ver. Alfredo Casarotto, 254 - Vera Tereza, Caieiras - SP, 07717-395"
+        },
+
+        {
+            nome: "Kalunga Jundiaí",
+            coords: [-23.1929, -46.8853],
+            endereco: "Av. Jundiaí, 1465 – Jardim Ana Maria, Jundiaí – SP, 13208-053"
+        },
+
+        {
+            nome: "Casas Bahia Centro",
+            coords: [-23.1868, -46.8849],
+            endereco: "Rua Barão de Jundiaí, 782 – Centro, Jundiaí – SP, 13201-010"
+        },
+
+        {
+            nome: "Casas Bahia Castanho",
+            coords: [-23.1872, -46.8856],
+            endereco: "Acesso Centro Distribuição Casas Bahia, 710 – Castanho, Jundiaí – SP"
+        },
+
+        {
+            nome: "Pontofrio Jundiaí",
+            coords: [-23.1865, -46.8847],
+            endereco: "Rua Barão de Jundiaí, 684 – Centro, Jundiaí – SP, 13201-010"
+        },
+
+        {
+            nome: "Carrefour Jundiaí",
+            coords: [-23.2009, -46.8845],
+            endereco: "Av. Nove de Julho, 3101 – Anhangabaú, Jundiaí – SP, 13208-056"
+        },
+        {
+            nome: "Extra Hipermercado Jundiaí",
+            coords: [-23.2027, -46.8840],
+            endereco: "Av. Nove de Julho, 3101 – Anhangabaú, Jundiaí – SP, 13208-056"
+        }
+
+
+
+
+        
+
+
+
+
+
+        
+
+    ];
+
+    // =========================
+    // CRIA OS PINS
+    // =========================
+    // Ícone customizado
+    var iconeVerde = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+    
+    iconSize: [45, 45],     // 🔥 tamanho do ícone (largura, altura)
+    iconAnchor: [22, 45],   // 📍 ponto que encosta no mapa
+    popupAnchor: [0, -40]   // 💬 posição do popup
+    });
+    var grupo = [];
+
+    locais.forEach(function(local) {
+
+        var marker = L.marker(local.coords, { icon: iconeVerde })
+            .addTo(map)
+            .bindPopup(
+                "<b>" + local.nome + "</b><br>" +
+                "📍 " + local.endereco + "<br><br>" +
+                "♻️ Ponto de coleta"
+            );
+
+        grupo.push(marker);
+    });
+    setTimeout(function () {
+    map.invalidateSize();
+    map.fitBounds(group.getBounds());
+}, 100);
+
+    // ajusta zoom automático
+    var group = new L.featureGroup(grupo);
+    map.fitBounds(group.getBounds());
+
+</script>
+
+<!-- Bootstrap JS -->
+<script src="bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
